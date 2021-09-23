@@ -1,10 +1,8 @@
 package com.banking.demo.service;
 
-import com.banking.demo.entity.Good;
-import com.banking.demo.entity.GoodOrder;
-import com.banking.demo.entity.Offer;
-import com.banking.demo.entity.Order;
+import com.banking.demo.entity.*;
 import com.banking.demo.exception.NoOrderCreatedException;
+import com.banking.demo.exception.NoOrderFoundException;
 import com.banking.demo.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,9 +27,12 @@ public class OrderService {
     @Autowired
     private OfferService offerService;
 
-    public Order createOrder(Map<Long, Integer> goods) throws NoOrderCreatedException {
+    @Autowired
+    private CustomerService customerService;
+
+    public Order createOrder(Map<Long, Integer> goods, Integer idCustomer) throws NoOrderCreatedException {
         if (goodService.goodsAvailable(goods)) {
-            Order order = orderRepository.save(new Order(LocalDate.now()));
+            Order order = orderRepository.save(new Order(LocalDate.now(), customerService.getCustomer(idCustomer)));
             List<GoodOrder> goodOrders = new ArrayList<>();
 
             goods.forEach((idGood, numGoodRequest) -> {
@@ -47,6 +48,7 @@ public class OrderService {
             });
 
             order.setGoodOrders(goodOrders);
+            orderRepository.save(order);
 
             return order;
         } else {
@@ -54,5 +56,11 @@ public class OrderService {
         }
     }
 
+    public Order getOrderById(Integer id) {
+        return orderRepository.findById(id).orElseThrow(NoOrderFoundException::new);
+    }
 
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
 }

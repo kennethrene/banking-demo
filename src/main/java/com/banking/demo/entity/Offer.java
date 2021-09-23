@@ -8,19 +8,19 @@ import java.util.Objects;
 @Entity
 public class Offer implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private OfferType offerType;
     private Integer baseItems;
     private Integer finalItems;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     private List<Good> goods;
 
     public Offer() {
     }
 
-    public Offer(Integer baseItems, Integer finalItems, List<Good> goods, OfferType offerType) {
+    public Offer(Integer id, Integer baseItems, Integer finalItems, List<Good> goods, OfferType offerType) {
+        this.id = id;
         this.baseItems = baseItems;
         this.finalItems = finalItems;
         this.goods = goods;
