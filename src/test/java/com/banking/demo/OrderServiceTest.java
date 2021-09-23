@@ -5,9 +5,11 @@ import com.banking.demo.exception.NoOrderCreatedException;
 import com.banking.demo.exception.NoStockAvailableException;
 import com.banking.demo.repository.GoodRepository;
 import com.banking.demo.service.GoodService;
+import com.banking.demo.service.OfferService;
 import com.banking.demo.service.OrderService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -23,7 +25,7 @@ class OrderServiceTest {
 	private OrderService orderService;
 
 	@Autowired
-	private GoodService goodService;
+	private OfferService offerService;
 
 	@Autowired
 	private GoodRepository goodRepository;
@@ -33,23 +35,20 @@ class OrderServiceTest {
 	}
 
 	@Test
-	void createOrderOk() {
+	void createOrderWithoutOfferOk() {
 		Order newOrder = new Order(LocalDate.now());
 		newOrder.setId(1);
 
 		Map<Long, Integer> goodsOrder = new HashMap<>();
-		goodsOrder.put(1L, 20);
-		goodsOrder.put(2L, 10);
+		goodsOrder.put(2L, 2);
 
 		try {
 			Order order = orderService.createOrder(goodsOrder);
 
 			assertNotNull(order);
-			assertEquals(order.getGoodOrders().size(), 2);
-			assertEquals(goodRepository.findById(1L).getStock(), 80);
-			assertEquals(goodRepository.findById(2L).getStock(), 40);
-			assertEquals(order.getGoodOrders().get(0).getCost(), 1200);
-			assertEquals(order.getGoodOrders().get(1).getCost(), 250);
+			assertEquals(order.getGoodOrders().size(), 1);
+			assertEquals(goodRepository.findById(2L).getStock(), 48);
+			assertEquals(order.getGoodOrders().get(0).getCost(), 50);
 		} catch (NoOrderCreatedException e) {
 		}
 	}
@@ -65,6 +64,33 @@ class OrderServiceTest {
 			assert false;
 		} catch (NoStockAvailableException | NoOrderCreatedException e) {
 			assert true;
+		}
+	}
+
+	@Test
+	void createOrderWithOffer() {
+		Order newOrder = new Order(LocalDate.now());
+		newOrder.setId(1);
+
+		Map<Long, Integer> goodsOrder = new HashMap<>();
+		goodsOrder.put(1L, 20);
+		goodsOrder.put(2L, 10);
+
+		try {
+			Order order = orderService.createOrder(goodsOrder);
+
+			assertNotNull(order);
+			assertEquals(order.getGoodOrders().size(), 2);
+			assertEquals(goodRepository.findById(1L).getStock(), 80);
+			assertEquals(goodRepository.findById(2L).getStock(), 38);
+			assertEquals(order.getGoodOrders().get(0).getCost(), 1200);
+
+			assertEquals(order.getGoodOrders().get(0).getNumGoods(), 20);
+			assertEquals(order.getGoodOrders().get(0).getExtraGoods(), 20);
+
+			assertEquals(order.getGoodOrders().get(1).getNumGoods(), 10);
+			assertEquals(order.getGoodOrders().get(1).getCost(), 175);
+		} catch (NoOrderCreatedException e) {
 		}
 	}
 }

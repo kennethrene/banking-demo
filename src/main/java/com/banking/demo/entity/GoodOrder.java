@@ -11,6 +11,7 @@ public class GoodOrder implements Serializable {
     private GoodOrderKey id;
     private Integer numGoods;
     private Integer cost;
+    private Integer extraGoods;
 
     public GoodOrder() {
     }
@@ -45,16 +46,24 @@ public class GoodOrder implements Serializable {
         this.cost = cost;
     }
 
+    public Integer getExtraGoods() {
+        return extraGoods;
+    }
+
+    public void setExtraGoods(Integer extraGoods) {
+        this.extraGoods = extraGoods;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GoodOrder goodOrder = (GoodOrder) o;
-        return Objects.equals(id, goodOrder.id) && Objects.equals(numGoods, goodOrder.numGoods) && Objects.equals(cost, goodOrder.cost);
+        return Objects.equals(id, goodOrder.id) && Objects.equals(numGoods, goodOrder.numGoods) && Objects.equals(cost, goodOrder.cost) && Objects.equals(extraGoods, goodOrder.extraGoods);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, numGoods, cost);
+        return Objects.hash(id, numGoods, cost, extraGoods);
     }
 }
