@@ -17,11 +17,15 @@ public class Order implements Serializable {
     @OneToMany
     private List<GoodOrder> goodOrders;
 
+    @ManyToOne
+    private Customer customer;
+
     public Order() {
     }
 
-    public Order(LocalDate date) {
+    public Order(LocalDate date, Customer customer) {
         this.date = date;
+        this.customer = customer;
     }
 
     public Integer getId() {
@@ -42,6 +46,14 @@ public class Order implements Serializable {
 
    public List<GoodOrder> getGoodOrders() {
         return goodOrders;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public void setGoodOrders(List<GoodOrder> goodOrders) {

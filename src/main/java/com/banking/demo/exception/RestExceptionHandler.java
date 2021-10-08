@@ -19,4 +19,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> orderCreationError(Exception e, WebRequest request) {
         return handleExceptionInternal(e, "Error creating the order", new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
+
+    @ExceptionHandler({NoOrderFoundException.class})
+    protected ResponseEntity<Object> orderFoundError(Exception e, WebRequest request) {
+        return handleExceptionInternal(e, "No order found", new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
 }

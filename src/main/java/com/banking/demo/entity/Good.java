@@ -7,16 +7,19 @@ import java.util.Objects;
 @Entity
 public class Good implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private Integer cost;
     private Integer stock;
 
+    @ManyToOne
+    private Offer offer;
+
     public Good() {
     }
 
-    public Good(String name, Integer cost, Integer stock) {
+    public Good(Long id, String name, Integer cost, Integer stock) {
+        this.id = id;
         this.name = name;
         this.cost = cost;
         this.stock = stock;
@@ -52,6 +55,14 @@ public class Good implements Serializable {
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    public Offer getOffer() {
+        return offer;
+    }
+
+    public void setOffer(Offer offer) {
+        this.offer = offer;
     }
 
     @Override
