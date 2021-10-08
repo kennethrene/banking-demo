@@ -4,7 +4,6 @@ import com.banking.demo.entity.Customer;
 import com.banking.demo.entity.GoodOrder;
 import com.banking.demo.entity.Order;
 import com.banking.demo.exception.NoOrderCreatedException;
-import com.banking.demo.exception.NoOrderFoundException;
 import com.banking.demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,7 +46,7 @@ public class OrderController {
 
     static class RequestBody {
         Integer idCustomer;
-        List<goodsBody> goods;
+        List<GoodsBody> goods;
 
         public Integer getIdCustomer() {
             return idCustomer;
@@ -57,16 +56,16 @@ public class OrderController {
             this.idCustomer = idCustomer;
         }
 
-        public List<goodsBody> getGoods() {
+        public List<GoodsBody> getGoods() {
             return goods;
         }
 
-        public void setGoods(List<goodsBody> goods) {
+        public void setGoods(List<GoodsBody> goods) {
             this.goods = goods;
         }
     }
 
-    static class goodsBody {
+    static class GoodsBody {
         Long idGood;
         Integer value;
 

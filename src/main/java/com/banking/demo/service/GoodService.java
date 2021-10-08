@@ -1,13 +1,11 @@
 package com.banking.demo.service;
 
 import com.banking.demo.entity.Good;
-import com.banking.demo.entity.Offer;
 import com.banking.demo.exception.NoStockAvailableException;
 import com.banking.demo.repository.GoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
