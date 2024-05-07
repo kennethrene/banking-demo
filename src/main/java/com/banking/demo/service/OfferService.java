@@ -7,12 +7,16 @@ import com.banking.demo.repository.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class OfferService {
-    @Autowired
-    OfferRepository offerRepository;
+    private final OfferRepository offerRepository;
+
+    public OfferService(OfferRepository offerRepository) {
+        this.offerRepository = offerRepository;
+    }
 
     public boolean isOfferAvailable() {
         return true;
@@ -20,6 +24,10 @@ public class OfferService {
 
     public Optional<Offer> isGoodInOffer(Good good) {
         return offerRepository.findAll().stream().filter((Offer o) -> o.getGoods().stream().anyMatch((Good g) -> g.getId() == good.getId())).findFirst();
+    }
+
+    public List<Offer> getOffers() {
+        return offerRepository.findAll();
     }
 
     public GoodOrder updateOrderWithOffer(Good good, GoodOrder goodOrder, Integer numGoodRequest) {

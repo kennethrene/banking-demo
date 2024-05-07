@@ -1,6 +1,9 @@
 package com.banking.demo.entity;
 
-import javax.persistence.*;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,6 +15,10 @@ public class GoodOrder implements Serializable {
     private Integer numGoods;
     private Integer cost;
     private Integer extraGoods;
+
+    @ManyToOne
+    @JoinColumn(name="id")
+    private Order order;
 
     public GoodOrder() {
     }
@@ -52,6 +59,14 @@ public class GoodOrder implements Serializable {
 
     public void setExtraGoods(Integer extraGoods) {
         this.extraGoods = extraGoods;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     @Override

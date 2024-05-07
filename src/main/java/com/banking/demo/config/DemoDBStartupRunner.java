@@ -14,14 +14,16 @@ import java.util.List;
 
 @Component
 public class DemoDBStartupRunner implements CommandLineRunner {
-    @Autowired
-    GoodRepository goodRepository;
+    private final GoodRepository goodRepository;
+    private final OfferRepository offerRepository;
 
-    @Autowired
-    OfferRepository offerRepository;
+    public DemoDBStartupRunner(GoodRepository goodRepository, OfferRepository offerRepository) {
+        this.goodRepository = goodRepository;
+        this.offerRepository = offerRepository;
+    }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         Good apple = new Good("Apple", 60, 100);
         Good orange = new Good("Orange", 25, 50);
 

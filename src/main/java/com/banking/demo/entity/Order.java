@@ -14,7 +14,7 @@ public class Order implements Serializable {
     private Integer id;
     private LocalDate date;
 
-    @OneToMany
+    @OneToMany(mappedBy = "order")
     private List<GoodOrder> goodOrders;
 
     public Order() {
